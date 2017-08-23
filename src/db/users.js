@@ -1,6 +1,6 @@
 const db = require('./db');
 
-const createUser = function(user){
+const createUser = function(username, password){
   return db.query(`
     INSERT INTO
       users (username, password)
@@ -10,14 +10,14 @@ const createUser = function(user){
       *
     `,
     [
-      user.username,
-      user.password,
+      username,
+      password,
     ])
     .catch(error => error);
-}
+};
 
 const findUser = function(username){
-  return db.query(`
+  return db.oneOrNone(`
     SELECT * FROM users
     WHERE username = $1
     `,
@@ -25,7 +25,7 @@ const findUser = function(username){
     username
   ])
   .catch(error => error);
-}
+};
 
 module.exports = {
   createUser,

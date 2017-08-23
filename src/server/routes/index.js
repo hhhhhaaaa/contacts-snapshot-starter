@@ -15,12 +15,12 @@ router.post('/login', (request, response) => {
   const loginPassword = request.body.password;
   DbUsers.findUser(loginUsername)
     .then((user) => {
-      if (!user || loginPassword !== user[0].password) {
+      if (!user || loginPassword !== user.password) {
         console.log("Username and password don't match");
         response.redirect('/login');
       } else {
         console.log("User logged in");
-        request.session.user = user[0].username;
+        request.session.user = user.username;
         response.redirect('/');
       }
     })
@@ -32,17 +32,19 @@ router.get('/signup', (request, response) => {
 });
 
 router.post('/signup', (request, response) => {
-  const userInformation = request.body;
+  const username = request.body.username;
   const userPassword = request.body.password;
-  bcrypt.hash(userPassword, saltRounds, function(err, hash) {
-
-  });
-  DbUsers.createUser(userInformation)
+  bcrypt.hash(userPassword, saltRounds).then(newlyHashedPassword => {
+    const hashedPassword = newlyHashedPassword;
+    return hashedPassword;
+  }).then(hashedPassword => {
+  DbUsers.createUser(username, hashedPassword)
     .then((users) => {
       response.redirect('/login');
-      console.log("User created");
     })
     .catch( err => console.log('err', err) );
+  });
+  //.catch( err => {console.log("something happened with the hash: " + err.message )};)
 });
 
 router.get('/', (request, response) => {
