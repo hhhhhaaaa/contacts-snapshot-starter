@@ -15,13 +15,22 @@ router.post('/login', (request, response) => {
   const loginPassword = request.body.password;
   DbUsers.findUser(loginUsername)
     .then((user) => {
-      if (!user || loginPassword !== user.password) {
+      if (!user) {
         console.log("Username and password don't match");
         response.redirect('/login');
       } else {
-        console.log("User logged in");
-        request.session.user = user.username;
-        response.redirect('/');
+        bcrypt.compare(loginPassword, user.password)
+        .then(comparisonResult => {
+          if (comparisonResult === false) {
+            console.log("Username and password don't match");
+            response.redirect('/login');
+          } else {
+            console.log("User logged in");
+            request.session.user = user.username;
+            response.redirect('/');
+          }
+        })
+        .catch(error => console.error(error.message));
       }
     })
     .catch( err => console.log('err', err) );
@@ -39,10 +48,14 @@ router.post('/signup', (request, response) => {
     return hashedPassword;
   }).then(hashedPassword => {
   DbUsers.createUser(username, hashedPassword)
-    .then((users) => {
-      response.redirect('/login');
+    .then((user) => {
+        response.redirect('/login');
     })
-    .catch( err => console.log('err', err) );
+    .catch( err => {
+      console.log("that username already exists");
+      console.error(err.message);
+      response.redirect('/signup');
+    });
   });
   //.catch( err => {console.log("something happened with the hash: " + err.message )};)
 });

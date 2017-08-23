@@ -13,7 +13,8 @@ const createUser = function(username, password){
       username,
       password,
     ])
-    .catch(error => error);
+    .catch(error => { throw error;
+    });
 };
 
 const findUser = function(username){
@@ -24,10 +25,11 @@ const findUser = function(username){
   [
     username
   ])
-  .catch(error => error);
+  .catch(error => { console.log(error.message);
+  });
 };
 
 module.exports = {
   createUser,
   findUser
-}
+};
