@@ -1,4 +1,4 @@
-const db = require('./db/contacts.js')
+const db = require('./db/contacts.js');
 
 const createContact = function(contact){
   return db.createContact(contact);
