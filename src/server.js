@@ -10,7 +10,7 @@ const app = express();
 
 //View Engine
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('views', [__dirname + '/views', __dirname + '/views/common', __dirname + '/views/contacts', __dirname + '/views/partials', __dirname + '/views/users']);
 
 //Middleware
 app.use(express.static('public'));
