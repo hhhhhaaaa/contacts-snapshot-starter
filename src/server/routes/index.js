@@ -7,7 +7,11 @@ const Users = require('../../models/users');
 const saltRounds = 10;
 
 router.get('/login', (request, response) => {
-  response.render('login');
+  if (!request.session.user) {
+    response.render('login');
+  } else {
+    response.redirect('/');
+  }
 });
 
 router.post('/login', (request, response) => {
@@ -27,7 +31,7 @@ router.post('/login', (request, response) => {
           } else {
             console.log("User logged in");
             request.session.user = user.username;
-            response.redirect('/');
+            response.redirect('/contacts');
           }
         })
         .catch(error => console.error(error.message));
@@ -61,9 +65,7 @@ router.post('/signup', (request, response) => {
 });
 
 router.get('/', (request, response) => {
-  Contacts.getContacts()
-    .then((contacts) => {response.render('index', { contacts });})
-    .catch( err => console.log('err', err) );
+  response.render('index');
 });
 
 router.use('/contacts', contactsRoutes); // /contacts/search

@@ -1,16 +1,14 @@
-<%- include header.ejs %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contacts</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script type="text/javascript" src="/script.js"></script>
+</head>
+<body>
+  <a href="/signup">Signup</a>
+  <a href="/login">Login</a>
+</body>
 
-  <h1>Contacts</h1>
-
-  <div class="contact-list">
-    <% contacts.forEach(function(contact){ %>
-      <div class="contact-list-member">
-        <a class="contact-link" href="/contacts/<%= contact.id %>">
-          <%= contact.first_name %>&nbsp;<%= contact.last_name %>
-        </a>
-        <a class="delete-contact" href="/contacts/<%= contact.id %>/delete" tabindex="-1">X</a>
-      </div>
-    <% }) %>
-  </div>
-
-<%- include footer.ejs %>
+</html>
