@@ -3,7 +3,6 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const logger = require('morgan');
 const session = require('express-session');
-const dbContacts = require('./db/contacts');
 const {renderError} = require('./server/utils');
 const routes = require('./server/routes');
 
@@ -23,6 +22,7 @@ app.use((request, response, next) => {
 app.use(logger('dev'));
 app.use(session({
   key: 'user_id',
+  //move this secret to a .env file - and have different secrets for different environments
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,

@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
-const contacts = require('./contacts');
-const DbContacts = require('../../db/contacts');
-const DbUsers = require('../../db/users');
+const contactsRoutes = require('./contacts');
+const Contacts = require('../../models/contacts');
+const Users = require('../../models/users');
 
 const saltRounds = 10;
 
@@ -13,7 +13,7 @@ router.get('/login', (request, response) => {
 router.post('/login', (request, response) => {
   const loginUsername = request.body.username;
   const loginPassword = request.body.password;
-  DbUsers.findUser(loginUsername)
+  Users.findUser(loginUsername)
     .then((user) => {
       if (!user) {
         console.log("Username and password don't match");
@@ -47,7 +47,7 @@ router.post('/signup', (request, response) => {
     const hashedPassword = newlyHashedPassword;
     return hashedPassword;
   }).then(hashedPassword => {
-  DbUsers.createUser(username, hashedPassword)
+  Users.createUser(username, hashedPassword)
     .then((user) => {
         response.redirect('/login');
     })
@@ -61,11 +61,11 @@ router.post('/signup', (request, response) => {
 });
 
 router.get('/', (request, response) => {
-  DbContacts.getContacts()
+  Contacts.getContacts()
     .then((contacts) => {response.render('index', { contacts });})
     .catch( err => console.log('err', err) );
 });
 
-router.use('/contacts', contacts); // /contacts/search
+router.use('/contacts', contactsRoutes); // /contacts/search
 
 module.exports = router;
