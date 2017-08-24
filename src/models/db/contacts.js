@@ -1,4 +1,4 @@
-const db = require('./db')
+const db = require('./db');
 
 const createContact = function(contact){
   return db.query(`
@@ -14,7 +14,7 @@ const createContact = function(contact){
       contact.last_name,
     ])
     .catch(error => error);
-}
+};
 
 const getContacts = function(){
   return db.query(`
@@ -24,7 +24,7 @@ const getContacts = function(){
       contacts
     `, [])
     .catch(error => error);
-}
+};
 
 const getContact = function(contactId){
   return db.one(`
@@ -32,7 +32,7 @@ const getContact = function(contactId){
     `,
     [contactId])
     .catch(error => error);
-}
+};
 
 const deleteContact = function(contactId){
   return db.query(`
@@ -43,7 +43,7 @@ const deleteContact = function(contactId){
     `,
     [contactId])
     .catch(error => error);
-}
+};
 
 const searchForContact = function(searchQuery){
   return db.query(`
@@ -56,7 +56,7 @@ const searchForContact = function(searchQuery){
     `,
     [`%${searchQuery.toLowerCase().replace(/\s+/,'%')}%`])
     .catch(error => error);
-}
+};
 
 module.exports = {
   createContact,
@@ -64,4 +64,4 @@ module.exports = {
   getContact,
   deleteContact,
   searchForContact
-}
+};
