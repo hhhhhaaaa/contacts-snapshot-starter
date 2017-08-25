@@ -3,7 +3,11 @@
   <h1>Login</h1>
 
   <form method="post" action="/login" class="login-form">
-    <pre class="new-user-form-errors"></pre>
+    <pre class="new-user-form-errors">
+      <%if(message) {%>
+      <%=message%>
+      <%}%>
+    </pre>
     <label>
       <span>Username:</span>
       <input type="text" name="username" />

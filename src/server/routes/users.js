@@ -4,11 +4,12 @@ const {renderError} = require('../utils');
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+let message;
 
 
 router.get('/login', (request, response) => {
   if (!request.session.user) {
-    response.render('login');
+    response.render('login', {message});
   } else {
     response.redirect('/contacts');
   }
@@ -20,14 +21,14 @@ router.post('/login', (request, response) => {
   Users.findUser(loginUsername)
     .then((user) => {
       if (!user) {
-        console.log("Username and password don't match");
-        response.redirect('/login');
+        message = "Username and password don't match";
+        response.render('login', {message});
       } else {
         bcrypt.compare(loginPassword, user.password)
         .then(comparisonResult => {
           if (comparisonResult === false) {
-            console.log("Username and password don't match");
-            response.redirect('/login');
+            message = "Username and password don't match";
+            response.render('login', {message});
           } else {
             console.log("User logged in");
             request.session.user = user;

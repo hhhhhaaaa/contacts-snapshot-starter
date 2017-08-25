@@ -20,7 +20,7 @@ router.post('/new', (request, response, next) => {
         if (contact) return response.redirect(`/contacts/${contact[0].id}`);
         next();
       })
-      .catch(error => renderError(error, response, response));
+      .catch(error => renderError(error, response));
   } else {
     response.redirect('/');
   }
@@ -35,7 +35,7 @@ router.get('/:contactId/delete', (request, response, next) => {
         if (contact) return response.redirect('/');
         next();
       })
-      .catch(error => renderError(error, response, response));
+      .catch(error => renderError(error, response));
   } else {
     response.status(403).render('not_authorized');
   }
@@ -65,7 +65,7 @@ router.get('/:contactId', (request, response, next) => {
       });
       next();
     })
-    .catch(error => renderError(error, response, response));
+    .catch(error => renderError(error, response));
 });
 
 router.get('/search', (request, response, next) => {
@@ -78,7 +78,7 @@ router.get('/search', (request, response, next) => {
       });
       next();
     })
-    .catch(error => renderError(error, response, response));
+    .catch(error => renderError(error, response));
 });
 
 module.exports = router;

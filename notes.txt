@@ -1,9 +1,5 @@
 Singular or plural database name for user?/Why did table user give us an error.
-what is the value of the key when the session is made (before it's hashed with the secret)?
 what is the best way to be able to access folders within views? Currently, we have an array of places to look with all the folders
 
-add user notifications for errors (currently console.logs)
-We need to make sure everything looks clean?
-Look for areas to dry up code.
-//make session go into a data store
-  connect pg-simple is difficult to use
+ToDo
+add user notifications for username already exists error in signup

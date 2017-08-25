@@ -5,7 +5,6 @@ const usersRoutes = require('./users');
 
 const isLoggedIn = function(req,res,next) {
   if(req.session.user) {
-    console.log("Hi!");
     next();
   } else {
     res.redirect("/home");
@@ -13,7 +12,6 @@ const isLoggedIn = function(req,res,next) {
 };
 
 router.get('/home', (request, response) => {
-  console.log("***", request.session, request.session.user);
   response.render('index');
 });
 
