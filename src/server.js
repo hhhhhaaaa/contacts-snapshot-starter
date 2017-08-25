@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -21,9 +22,9 @@ app.use((request, response, next) => {
 });
 app.use(logger('dev'));
 app.use(session({
+  store: new (require('connect-pg-simple')(session))(),
   key: 'user_id',
-  //move this secret to a .env file - and have different secrets for different environments
-  secret: 'keyboard cat',
+  secret: process.env.DEV_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: { expires: 600000 }

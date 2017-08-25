@@ -5,6 +5,5 @@ what is the best way to be able to access folders within views? Currently, we ha
 add user notifications for errors (currently console.logs)
 We need to make sure everything looks clean?
 Look for areas to dry up code.
-
-//move secret to .env
 //make session go into a data store
+  connect pg-simple is difficult to use
