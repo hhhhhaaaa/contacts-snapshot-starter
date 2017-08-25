@@ -1,7 +1,5 @@
 const Contacts = require('../../models/contacts');
-const {
-  renderError
-} = require('../utils');
+const {renderError} = require('../utils');
 const canUserAccess = require('../../../authorization/roles.js');
 const router = require('express').Router();
 
@@ -19,7 +17,7 @@ router.post('/new', (request, response, next) => {
       })
       .catch(error => renderError(error, response, response));
   } else {
-    response.redirect('/contacts');
+    response.redirect('/');
   }
 });
 

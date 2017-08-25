@@ -13,7 +13,7 @@ const createUser = function(username, password){
       username,
       password,
     ])
-    .catch(error => { throw error;
+    .catch(error => { console.log(error.message);
     });
 };
 

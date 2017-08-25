@@ -13,7 +13,8 @@ const createContact = function(contact){
       contact.first_name,
       contact.last_name,
     ])
-    .catch(error => error);
+    .catch(error => { console.log(error.message);
+    });
 };
 
 const getContacts = function(){
@@ -23,7 +24,8 @@ const getContacts = function(){
     FROM
       contacts
     `, [])
-    .catch(error => error);
+    .catch(error => { console.log(error.message);
+    });
 };
 
 const getContact = function(contactId){
@@ -31,7 +33,8 @@ const getContact = function(contactId){
     SELECT * FROM contacts WHERE id=$1::int LIMIT 1
     `,
     [contactId])
-    .catch(error => error);
+    .catch(error => { console.log(error.message);
+    });
 };
 
 const deleteContact = function(contactId){
@@ -42,7 +45,8 @@ const deleteContact = function(contactId){
       id=$1::int
     `,
     [contactId])
-    .catch(error => error);
+    .catch(error => { console.log(error.message);
+    });
 };
 
 const searchForContact = function(searchQuery){
@@ -55,7 +59,8 @@ const searchForContact = function(searchQuery){
       lower(first_name || ' ' || last_name) LIKE $1::text
     `,
     [`%${searchQuery.toLowerCase().replace(/\s+/,'%')}%`])
-    .catch(error => error);
+    .catch(error => { console.log(error.message);
+    });
 };
 
 module.exports = {
