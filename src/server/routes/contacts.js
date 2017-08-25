@@ -4,11 +4,17 @@ const canUserAccess = require('../../../authorization/roles.js');
 const router = require('express').Router();
 
 router.get('/new', (request, response) => {
-  response.render('contacts/new');
+  let canAccess = canUserAccess(request.session.user, "createContact");
+  if(canAccess) {
+    response.render('contacts/new');
+  } else {
+    response.status(403).render('not_authorized');
+  }
 });
 
 router.post('/new', (request, response, next) => {
-  if (canUserAccess(request.session.user, "createContact")) {
+  let canAccess = canUserAccess(request.session.user, "createContact");
+  if (canAccess) {
     Contacts.createContact(request.body)
       .then(function(contact) {
         if (contact) return response.redirect(`/contacts/${contact[0].id}`);
@@ -22,7 +28,8 @@ router.post('/new', (request, response, next) => {
 
 router.get('/:contactId/delete', (request, response, next) => {
   const contactId = request.params.contactId;
-  if (canUserAccess(request.session.user, "deleteContact")) {
+  let canAccess = canUserAccess(request.session.user, "deleteContact");
+  if (canAccess) {
     Contacts.deleteContact(contactId)
       .then(function(contact) {
         if (contact) return response.redirect('/');
@@ -30,27 +37,31 @@ router.get('/:contactId/delete', (request, response, next) => {
       })
       .catch(error => renderError(error, response, response));
   } else {
-    response.redirect('/');
+    response.status(403).render('not_authorized');
   }
 });
 
 router.get('/', (request, response) => {
+  let canAccess = canUserAccess(request.session.user, "deleteContact");
   Contacts.getContacts()
     .then((contacts) => {
       response.render('contacts/index', {
-        contacts
+        contacts,
+        canAccess
       });
     })
     .catch(err => console.log('err', err));
 });
 
 router.get('/:contactId', (request, response, next) => {
+  let canAccess = canUserAccess(request.session.user, "deleteContact");
   const contactId = request.params.contactId;
   if (!contactId || !/^\d+$/.test(contactId)) return next();
   Contacts.getContact(contactId)
     .then(function(contact) {
       if (contact) return response.render('show', {
-        contact
+        contact,
+        canAccess
       });
       next();
     })
