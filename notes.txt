@@ -1,2 +1,7 @@
 Singular or plural database name for user?/Why did table user give us an error.
 Why/When to use the pre-tag.
+
+We need to setup the middleware for checking login.
+We need to setup the authorization for the other actions, and remove the links when necessary.
+We need to make sure everything looks clean?
+Look for areas to dry up code.

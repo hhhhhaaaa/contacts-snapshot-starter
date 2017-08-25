@@ -57,7 +57,7 @@ router.post('/signup', (request, response) => {
         response.redirect('/login');
     })
     .catch( err => {
-      console.log("that username already exists");
+      console.log("That username already exists");
       console.error(err.message);
       response.redirect('/signup');
     });
@@ -65,9 +65,15 @@ router.post('/signup', (request, response) => {
   //.catch( err => {console.log("something happened with the hash: " + err.message )};)
 });
 
-router.get('/', (request, response) => {
+router.get('/home', (request, response) => {
   console.log("***", request.session, request.session.user);
   response.render('index');
+});
+
+router.get('/', (request, response) => {
+  Contacts.getContacts()
+    .then((contacts) => {response.render('contacts/index', { contacts });})
+    .catch( err => console.log('err', err) );
 });
 
 router.use('/contacts', contactsRoutes); // /contacts/search
