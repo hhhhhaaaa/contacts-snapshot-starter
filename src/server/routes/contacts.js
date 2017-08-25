@@ -1,12 +1,27 @@
 const Contacts = require('../../models/contacts');
-const {renderError} = require('../utils');
+const {
+  renderError
+} = require('../utils');
 const canUserAccess = require('../../../authorization/roles.js');
 const router = require('express').Router();
 
 router.get('/new', (request, response) => {
   response.render('contacts/new');
 });
-// if (canUserAccess(request.session.user, "createContact")) {}
+
+router.post('/new', (request, response, next) => {
+  console.log(request.session);
+  if (canUserAccess(request.session.user, "createContact")) {
+    Contacts.createContact(request.body)
+      .then(function(contact) {
+        if (contact) return response.redirect(`/contacts/${contact[0].id}`);
+        next();
+      })
+      .catch(error => renderError(error, response, response));
+  } else {
+    response.redirect('/contacts');
+  }
+});
 
 router.get('/', (request, response) => {
   Contacts.getContacts()
@@ -16,15 +31,6 @@ router.get('/', (request, response) => {
       });
     })
     .catch(err => console.log('err', err));
-});
-
-router.post('/', (request, response, next) => {
-  Contacts.createContact(request.body)
-    .then(function(contact) {
-      if (contact) return response.redirect(`/contacts/${contact[0].id}`);
-      next();
-    })
-    .catch(error => renderError(error, response, response));
 });
 
 router.get('/:contactId', (request, response, next) => {

@@ -10,7 +10,7 @@ router.get('/login', (request, response) => {
   if (!request.session.user) {
     response.render('login');
   } else {
-    response.redirect('/');
+    response.redirect('/contacts');
   }
 });
 
@@ -30,7 +30,8 @@ router.post('/login', (request, response) => {
             response.redirect('/login');
           } else {
             console.log("User logged in");
-            request.session.user = user.username;
+            console.log("This is user", user.username, "This is session", request.session);
+            request.session.user = user;
             response.redirect('/contacts');
           }
         })
@@ -65,6 +66,7 @@ router.post('/signup', (request, response) => {
 });
 
 router.get('/', (request, response) => {
+  console.log("***", request.session, request.session.user);
   response.render('index');
 });
 
