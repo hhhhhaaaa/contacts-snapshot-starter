@@ -1,7 +1,12 @@
 Singular or plural database name for user?/Why did table user give us an error.
-Why/When to use the pre-tag.
+what is the value of the key when the session is made (before it's hashed with the secret)?
 
-We need to setup the middleware for checking login.
+
+//get rid of x on main contacts and delete on single contact
+  //make it not hang
 We need to setup the authorization for the other actions, and remove the links when necessary.
 We need to make sure everything looks clean?
 Look for areas to dry up code.
+
+//move secret to .env
+//make session go into a data store

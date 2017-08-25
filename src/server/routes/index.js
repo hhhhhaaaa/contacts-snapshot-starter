@@ -3,12 +3,24 @@ const contactsRoutes = require('./contacts');
 const Contacts = require('../../models/contacts');
 const usersRoutes = require('./users');
 
-
+const isLoggedIn = function(req,res,next) {
+  if(req.session.user) {
+    console.log("Hi!");
+    next();
+  } else {
+    res.redirect("/home");
+  }
+};
 
 router.get('/home', (request, response) => {
   console.log("***", request.session, request.session.user);
   response.render('index');
 });
+
+router.use('/', usersRoutes);
+
+//check if logged in, redirect to home if not
+router.use(isLoggedIn);
 
 router.get('/', (request, response) => {
   Contacts.getContacts()
@@ -17,6 +29,5 @@ router.get('/', (request, response) => {
 });
 
 router.use('/contacts', contactsRoutes); // /contacts/search
-router.use('/', usersRoutes);
 
 module.exports = router;

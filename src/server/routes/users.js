@@ -30,7 +30,6 @@ router.post('/login', (request, response) => {
             response.redirect('/login');
           } else {
             console.log("User logged in");
-            console.log("This is user", user.username, "This is session", request.session);
             request.session.user = user;
             response.redirect('/contacts');
           }

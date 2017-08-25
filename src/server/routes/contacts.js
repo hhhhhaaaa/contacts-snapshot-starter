@@ -8,11 +8,24 @@ router.get('/new', (request, response) => {
 });
 
 router.post('/new', (request, response, next) => {
-  console.log(request.session);
   if (canUserAccess(request.session.user, "createContact")) {
     Contacts.createContact(request.body)
       .then(function(contact) {
         if (contact) return response.redirect(`/contacts/${contact[0].id}`);
+        next();
+      })
+      .catch(error => renderError(error, response, response));
+  } else {
+    response.redirect('/');
+  }
+});
+
+router.get('/:contactId/delete', (request, response, next) => {
+  const contactId = request.params.contactId;
+  if (canUserAccess(request.session.user, "deleteContact")) {
+    Contacts.deleteContact(contactId)
+      .then(function(contact) {
+        if (contact) return response.redirect('/');
         next();
       })
       .catch(error => renderError(error, response, response));
@@ -39,17 +52,6 @@ router.get('/:contactId', (request, response, next) => {
       if (contact) return response.render('show', {
         contact
       });
-      next();
-    })
-    .catch(error => renderError(error, response, response));
-});
-
-
-router.get('/:contactId/delete', (request, response, next) => {
-  const contactId = request.params.contactId;
-  Contacts.deleteContact(contactId)
-    .then(function(contact) {
-      if (contact) return response.redirect('/');
       next();
     })
     .catch(error => renderError(error, response, response));
