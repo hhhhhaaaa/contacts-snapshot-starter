@@ -1,5 +1,54 @@
-Singular or plural database name for user?/Why did table user give us an error.
-what is the best way to be able to access folders within views? Currently, we have an array of places to look with all the folders
+******Notes from Punit's Code Review of this app:
+server file shouldn't do a lot of logic- only initialize things
+good that app.use(/, routes) is only that- no new info
 
-ToDo
-add user notifications for username already exists error in signup
+create a separate file for  floating middleware
+in server, make middleware.js, kinda next to utils
+	(the one that was written by not us, should have a name, so we'd know what it does when we move into its own file
+could rename users.js to sessions.js
+	user would be more about if I want to update my username or password or something???????
+---using contacts in the index.js is a smell, but what would be better?
+
+Bcrypt is a responsibility of the model- don't bcrypt.compare in the route, instead, create a function inside of model/users and then call it here.
+Same with the signup post that encrypts it   user.generatePassword
+
+move message inside of the individual routes (so not global- but why is that bad??)
+	don't need the variable, just pass in the message to the render
+
+the whole thing about !variable instead of variable === false
+
+don't make a variable if it's only used once, just inline it
+
+put authorization folder into src
+
+he's gonna get back to us about how to get multiple views
+
+Use singular names for db tables. User is a reserved word, so we can't use it. Come up with a different thing to name the table instead.
+
+The starter code we got has a non-restful routing thing – it did a get to '/:contact_id/delete' Instead:
+method-override package lets you PUT and DELETE using a form
+	a regular form only supports GET and POST
+
+
+******Punit's review of Jonathan and Eugene's Auth App
+https://github.com/jrpool/auth
+.env.template    is the name for that file
+./server/middleware(s?) is where to put a bunch of middleware
+	findBySessionId is a good name for that function :-)
+If using some hardcoded value like if(request.session.user) to see if there is an authenticated user, instead make a function and use its called value there
+
+
+********Q's:
+-what is the best way to be able to access folders within views? Currently, we have an array of places to look with all the folders
+-How do you do this:
+The conString should be sent into new (require('connect-pg-simple')(session))() like:
+store: new pgSession({
+  conString : 'pg://' + config.username + ':' + config.password + '@' + config.host + '/' + config.database
+}),
+(Instead, We're using a DATABASE_URL variable)
+
+
+
+********ToDo:
+-add user notifications for username already exists error in signup
+-incorporate Punit's notes
